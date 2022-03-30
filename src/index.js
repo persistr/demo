@@ -21,8 +21,8 @@ async function main () {
     .toolbox({ db, collection: collection('books') })
     .routes({ folder: path.resolve(__dirname, 'routes') })
     .errors((res, error) => {
-      console.error(error.message + '\t' + error.stack)
-      res.status(500).json({ error: 'Internal service error', internal: error.message, stack: error.stack })
+      console.error(`Error: ${error.message}`)
+      res.status(500).json({ error: 'Internal service error', message: error.message })
     })
     .build()
 
