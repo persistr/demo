@@ -43,5 +43,5 @@ async function main () {
 }
 
 // Run server and catch any errors.
-async function run(f) { try { await f() } catch (error) { console.error(error) }}
+async function run(f) { try { await f() } catch (error) { console.error(error.message) }}
 run(main)
