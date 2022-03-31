@@ -6,12 +6,15 @@ const { persistr } = require('@persistr/js')
 const { builder } = require('@persistr/microservice')
 const pkg = require('../package.json')
 
+// Tools.
+const messenger = require('./tools/messenger')
+
 async function main () {
   // Connect to Persistr.
   const { db } = await persistr.connect()
 
-  // Register domain objects and views with a custom set of tools.
-  await db.domain({ folder: path.resolve(__dirname, 'domain'), tools: { collection: collection('books') }})
+  // Register domain objects, views, and reactions with a custom set of tools.
+  await db.domain({ folder: path.resolve(__dirname, 'domain'), tools: { collection: collection('books'), messenger }})
 
   // Configure a web service.
   const service = builder
