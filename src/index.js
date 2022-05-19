@@ -16,6 +16,26 @@ async function main () {
   // Register domain objects, views, and reactions with a custom set of tools.
   await db.domain({ folder: path.resolve(__dirname, 'domain'), tools: { collection: collection('books'), messenger }})
 
+  // Alternatively, you can pass in your domain objects, views, and reactions.
+  /*
+  await db.domain({
+    tools: { collection: collection('books'), messenger },
+    objects: {
+      book: require('./domain/objects/book'),
+      customer: require('./domain/objects/customer')
+    },
+    reactions: {
+      'book.loaned': require('./domain/reactions/book/loaned')
+    },
+    views: {
+      'books.all': require('./domain/views/books/all'),
+      'books.available': require('./domain/views/books/available'),
+      'books.loaned': require('./domain/views/books/loaned'),
+      'books.retired': require('./domain/views/books/retired')
+    }
+  })
+  */
+
   // Configure a web service.
   const service = builder
     .name(pkg.name)
