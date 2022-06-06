@@ -1,3 +1,6 @@
+// Set env vars.
+process.env.PERSISTR_SERVER_SECRET = ''
+
 // Dependencies.
 const bodyParser = require('body-parser')
 const collection = require('tingodb-promise')
@@ -11,7 +14,11 @@ const messenger = require('./tools/messenger')
 
 async function main () {
   // Connect to Persistr.
-  const { db } = await persistr.connect()
+  const cxn = await persistr.connect()
+
+  // Create demo account and database.
+  const account = await cxn.account({ username: 'demo' }).create({ password: 'demo' })
+  const db = await account.db('demo').create()
 
   // Register domain objects, views, and reactions with a custom set of tools.
   await db.domain({ folder: path.resolve(__dirname, 'domain'), tools: { collection: collection('books'), messenger }})
@@ -55,7 +62,7 @@ async function main () {
   // Graceful shutdown.
   const shutdown = async () => {
     // Close database.
-    await db.close()
+    await db.connection.close()
 
     // Exit process.
     process.exit(0)
