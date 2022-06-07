@@ -16,9 +16,18 @@ async function main () {
   // Connect to Persistr.
   const cxn = await persistr.connect()
 
-  // Create demo account and database.
-  const account = await cxn.account({ username: 'demo' }).create({ password: 'demo' })
-  const db = await account.db('demo').create()
+  // This will connect you to a fully self-contained Persistr stack running in memory.
+  // In addition to in-memory, you can also store data to SQLite3.
+
+  // Use SQLite with a database file 'mydb.sqlite' in the current working folder:
+  // const cxn = await persistr.connect('sqlite3:mydb.sqlite')
+
+  // Use SQLite with an absolute path '/Users/user/mydb.sqlite':
+  // const cxn = await persistr.connect('sqlite3:/Users/user/mydb.sqlite')
+
+  // Create demo account and database (if they don't already exist).
+  const account = await cxn.account({ username: 'demo' }).createIfNotExists({ password: 'demo' })
+  const db = await account.db('demo').createIfNotExists()
 
   // Register domain objects, views, and reactions with a custom set of tools.
   await db.domain({ folder: path.resolve(__dirname, 'domain'), tools: { collection: collection('books'), messenger }})
