@@ -20,11 +20,11 @@ module.exports = {
     if (!options.page_size) options.page_size = 2
     if (!options.page_num) options.page_num = 1
 
-    // Return matching books at the given page.
+    // Return matching books at the given page, sorted by book name in ascending order.
     const skip = options.page_size * (options.page_num - 1)
-    const books = await docs('books').find({ retired: true }, { skip, limit: options.page_size })
+    const books = await docs('books').find({ retired: true }, { skip, limit: options.page_size, sort: 'name' })
 
-    // TODO: Sorting is not working just yet.
+    // Other ways to sort results (and optionally set asc/desc order).
     //const books = await docs('books').find({ retired: true }, { skip, limit: options.page_size, sort: 'name' })
     //const books = await docs('books').find({ retired: true }, { skip, limit: options.page_size, sort: { by: 'name', order: 'asc' }})
     //const books = await docs('books').find({ retired: true }, { skip, limit: options.page_size, sort: [ 'author', { by: 'name', order: 'asc' } ]})
